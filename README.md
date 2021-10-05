@@ -1,2 +1,2 @@
 # text-processor
-String Interpolation
+String Interpolation library
