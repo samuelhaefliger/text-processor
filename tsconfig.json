@@ -1,13 +1,12 @@
 {
   "compilerOptions": {
-    "declaration": true,
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "esnext",
     "noImplicitAny": true,
     "removeComments": true,
     "preserveConstEnums": true,
     "sourceMap": false,
-    "outDir": "dist"
+    "declaration": true,
+    "declarationDir": "dist"
   },
   "include": ["source/**/*"],
   "exclude": ["source/**/*.test.ts"]
