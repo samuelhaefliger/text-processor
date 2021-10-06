@@ -20,7 +20,7 @@
     "interpolation"
   ],
   "files": [
-    "dist/*"
+    "/dist"
   ],
   "author": "samuelhaefliger",
   "license": "ISC",
