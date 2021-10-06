@@ -1,8 +1,7 @@
-import textProcessor from './index'
-import _get from 'lodash/get'
+import { textProcessor } from './text-processor'
 
 const createProcessor = () => {
-  return textProcessor({ markStart: '{{', markEnd: '}}', getValue: _get })
+  return textProcessor()
 }
 
 describe('Text Processor Tests', () => {
