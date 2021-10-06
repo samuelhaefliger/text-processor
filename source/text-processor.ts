@@ -1,20 +1,4 @@
-export interface TextProcessorOptions {
-  markStart?: string
-  markEnd?: string
-  getValue?: (dataSource: any, dataPath: string) => any
-  locales?: string
-  formatNumber?: (value: any, digits?: number) => string
-  formatDate?: (value: any, format?: string) => string
-}
-
-export const numberFormat = (locales: string) => (value: any, digits = 0) => {
-  return parseFloat(value)
-    .toLocaleString(locales, { minimumFractionDigits: digits, maximumFractionDigits: digits })
-}
-
-export const dateFormat = (locales: string) => (value: any) => {
-  return new Date(value).toLocaleString(locales, { day: '2-digit', month: '2-digit', year: 'numeric' })
-}
+import { defaultOptions, Options } from "./options"
 
 interface MatchOptions {
   dataPaths: string[],
@@ -24,15 +8,7 @@ interface MatchOptions {
   format?: string,
 }
 
-export const defaultOptions: TextProcessorOptions = {
-  markStart: '{{',
-  markEnd: '}}',
-  getValue: (dataSource: any, dataPath: string) => dataSource[dataPath],
-  formatNumber: numberFormat('de-ch'),
-  formatDate: dateFormat('de-ch'),
-}
-
-export const textProcessor = (options?: TextProcessorOptions) => {
+export const textProcessor = (options?: Options) => {
   const { markStart, markEnd, getValue, formatNumber, formatDate } = { ...defaultOptions, ...options! }
 
   const getOptions = (match: string): MatchOptions => {

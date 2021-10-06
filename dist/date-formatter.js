@@ -1,9 +1,11 @@
 "use strict";
 exports.__esModule = true;
 exports.format = void 0;
+var regex = /\[([^\[\]]|\[[^\[\]]*])*]|([A-Za-z])\2+|\.{3}|./g;
 var compile = function (formatString) {
-    var re = /\[([^\[\]]|\[[^\[\]]*])*]|([A-Za-z])\2+|\.{3}|./g, keys, pattern = [formatString];
-    while (keys = re.exec(formatString)) {
+    var pattern = [];
+    var keys;
+    while (keys = regex.exec(formatString)) {
         pattern[pattern.length] = keys[0];
     }
     return pattern;
@@ -33,9 +35,6 @@ var formatter = {
     }
 };
 var format = function (value, format) {
-    return compile(format)
-        .slice(1)
-        .reduce(function (result, token) { return result
-        .concat(formatter[token] ? formatter[token](value) : token); }, '');
+    return compile(format).reduce(function (result, token) { return result.concat(formatter[token] ? formatter[token](value) : token); }, '');
 };
 exports.format = format;

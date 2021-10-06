@@ -1,8 +1,8 @@
-import { TextProcessorOptions } from './text-processor';
+import { Options } from './options';
 export declare type ProcessorRegistry = {
     [key: string]: (element: any, dataSource: any) => any;
 };
-export interface ObjectProcessorOptions extends TextProcessorOptions {
+export interface ObjectProcessorOptions extends Options {
     clone: <T>(value: T, customizer: (value: any, key: string) => any) => T;
     processors?: ProcessorRegistry;
 }

@@ -11,26 +11,10 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 exports.__esModule = true;
-exports.textProcessor = exports.defaultOptions = exports.dateFormat = exports.numberFormat = void 0;
-var numberFormat = function (locales) { return function (value, digits) {
-    if (digits === void 0) { digits = 0; }
-    return parseFloat(value)
-        .toLocaleString(locales, { minimumFractionDigits: digits, maximumFractionDigits: digits });
-}; };
-exports.numberFormat = numberFormat;
-var dateFormat = function (locales) { return function (value) {
-    return new Date(value).toLocaleString(locales, { day: '2-digit', month: '2-digit', year: 'numeric' });
-}; };
-exports.dateFormat = dateFormat;
-exports.defaultOptions = {
-    markStart: '{{',
-    markEnd: '}}',
-    getValue: function (dataSource, dataPath) { return dataSource[dataPath]; },
-    formatNumber: (0, exports.numberFormat)('de-ch'),
-    formatDate: (0, exports.dateFormat)('de-ch')
-};
+exports.textProcessor = void 0;
+var options_1 = require("./options");
 var textProcessor = function (options) {
-    var _a = __assign(__assign({}, exports.defaultOptions), options), markStart = _a.markStart, markEnd = _a.markEnd, getValue = _a.getValue, formatNumber = _a.formatNumber, formatDate = _a.formatDate;
+    var _a = __assign(__assign({}, options_1.defaultOptions), options), markStart = _a.markStart, markEnd = _a.markEnd, getValue = _a.getValue, formatNumber = _a.formatNumber, formatDate = _a.formatDate;
     var getOptions = function (match) {
         var _a = match.split(';'), expression = _a[0], typeExpression = _a[1];
         var _b = expression.split('+'), expression1 = _b[0], addition = _b[1];

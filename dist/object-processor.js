@@ -13,14 +13,16 @@ var __assign = (this && this.__assign) || function () {
 exports.__esModule = true;
 exports.objectProcessor = void 0;
 var text_processor_1 = require("./text-processor");
+var options_1 = require("./options");
+var utils_1 = require("./utils");
 var objectProcessor = function (options) {
-    var mergedOptions = __assign(__assign({}, text_processor_1.defaultOptions), options);
+    var mergedOptions = __assign(__assign({}, options_1.defaultOptions), options);
     var clone = mergedOptions.clone, getValue = mergedOptions.getValue, processors = mergedOptions.processors;
     var processText = (0, text_processor_1.textProcessor)(options);
     var process = function (value, dataSource) {
         if (dataSource === void 0) { dataSource = {}; }
         return clone(value, function (value, key) {
-            if (typeof value === 'string') {
+            if ((0, utils_1.isString)(value)) {
                 return processText(value, dataSource);
             }
             else if (Array.isArray(value)) {
