@@ -45,16 +45,27 @@ var defaultOptions = {
     formatDate: dateFormat()
 };
 
+var dataPathRegex = /(?<dataPaths>[\w.\[\]\|]*)/;
+var addtionRegex = /(\+(?<addition>[\w\s%:./"']*))?/;
+var defaultValueRegex = /(!(?<defaultValue>[\w:.]*))?/;
+var typeRegex = /(;(?<type>[\w]*)(:(?<format>[\w:.\-/\+]*))?)?/;
+var regex = new RegExp(dataPathRegex.source.concat(addtionRegex.source, defaultValueRegex.source, typeRegex.source));
+var parseOptions = function (value) {
+    var matches = value.match(regex);
+    return Object.keys(matches.groups)
+        .reduce(function (options, key) {
+        if (matches.groups[key]) {
+            var value_1 = matches.groups[key];
+            if (value_1) {
+                options[key] = key === 'dataPaths' ? value_1.split('|') : value_1;
+            }
+        }
+        return options;
+    }, { dataPaths: [] });
+};
+
 var textProcessor = function (options) {
     var _a = __assign(__assign({}, defaultOptions), options), markStart = _a.markStart, markEnd = _a.markEnd, getValue = _a.getValue, formatNumber = _a.formatNumber, formatDate = _a.formatDate;
-    var getOptions = function (match) {
-        var _a = match.split(';'), expression = _a[0], typeExpression = _a[1];
-        var _b = expression.split('+'), expression1 = _b[0], addition = _b[1];
-        var _c = expression1.split('!'), pathExpression = _c[0], defaultValue = _c[1];
-        var dataPaths = pathExpression.split('|');
-        var _d = typeExpression ? typeExpression.split(':') : [], type = _d[0], format = _d[1];
-        return { dataPaths: dataPaths, defaultValue: defaultValue, addition: addition, type: type, format: format };
-    };
     var normalizePath = function (value) {
         var result = value;
         if (result.startsWith(markStart)) {
@@ -104,7 +115,7 @@ var textProcessor = function (options) {
         var matches = text.match(new RegExp("\\" + markStart + ".*?\\" + markEnd, 'g'));
         if (matches !== null) {
             matches.forEach(function (match) {
-                var options = getOptions(normalizePath(match));
+                var options = parseOptions(normalizePath(match));
                 var value = getValueFromDataSource(dataSource, options);
                 if (value || !keepMarks) {
                     text = text.replace(match, value);
