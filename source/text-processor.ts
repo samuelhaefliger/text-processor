@@ -1,28 +1,8 @@
-import { defaultOptions, Options } from "./options"
-
-interface MatchOptions {
-  dataPaths: string[],
-  defaultValue: any,
-  addition?: string,
-  type?: string,
-  format?: string,
-}
+import { defaultOptions, Options } from './options'
+import { MatchOptions, parseOptions } from './parser'
 
 export const textProcessor = (options?: Options) => {
   const { markStart, markEnd, getValue, formatNumber, formatDate } = { ...defaultOptions, ...options! }
-
-  const getOptions = (match: string): MatchOptions => {
-    const [expression, typeExpression] = match.split(';')
-  
-    const [expression1, addition] = expression.split('+')
-    const [pathExpression, defaultValue] = expression1.split('!')
-  
-    const dataPaths = pathExpression.split('|')
-  
-    const [type, format] = typeExpression ? typeExpression.split(':') : []
-  
-    return { dataPaths, defaultValue, addition, type, format }
-  }
   
   const normalizePath = (value: string) => {
     let result = value
@@ -31,7 +11,7 @@ export const textProcessor = (options?: Options) => {
     }
   
     if (result.endsWith(markEnd)) {
-      result = result.substr(0, result.length-markEnd.length)
+      result = result.substr(0, result.length - markEnd.length)
     }
   
     return result
@@ -76,7 +56,7 @@ export const textProcessor = (options?: Options) => {
     
     if (matches !== null) {
       matches.forEach(match => {
-        const options = getOptions(normalizePath(match))
+        const options = parseOptions(normalizePath(match))
         const value = getValueFromDataSource(dataSource, options)
 
         if (value || !keepMarks) {
